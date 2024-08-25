@@ -4,6 +4,7 @@ import com.indx.todolist.entity.TodoItem;
 import com.indx.todolist.repository.TodoRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,8 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class TodoController {
+    @Value("${aaa}")
+    String aaa;
     @NonNull
     TodoRepository repository;
 
@@ -33,5 +36,9 @@ public class TodoController {
     @DeleteMapping("/deleteItem/{id}")
     void deleteItem(@PathVariable long id) {
         repository.deleteById(id);
+    }
+    @GetMapping("/aaa")
+    String aaa() {
+        return aaa;
     }
 }
