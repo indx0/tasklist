@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>TODO List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="flex flex-col justify-center gap-4 p-10">
+  <h2 class="font-bold text-3xl">Task List</h2>
+
+  <ul class="list-disc ml-5" th:each="i: ${list}">
+    <li th:text="${i.item + ' // ID: ' + i.id}"></li>
+  </ul>
+
+  <input class="border-0 bg-neutral-200 p-1 rounded-md outline-none" type="text" id="task" name="task" placeholder="Task Name / ID">
+  <button onclick="createTask()" class="border-0 bg-green-200 p-1 px-5 rounded-md">Create</button>
+  <button onclick="deleteTask()" class="border-0 bg-red-200 p-1 px-5 rounded-md">Delete</button>
+
+  <script>
+    async function createTask(task) {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        "item": document.getElementById("task").value
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: headers,
+        body: raw,
+      };
+
+      await fetch("http://localhost:8080/createItem", requestOptions)
+              .then((response) => response.text())
+              .then((result) => console.log(result))
+              .catch((error) => console.error(error));
+
+      window.location.reload();
+    }
+
+    async function deleteTask() {
+      const requestOptions = {
+        method: "DELETE",
+      };
+
+      await fetch(`http://localhost:8080/deleteItem/${document.getElementById("task").value}`, requestOptions)
+              .then((response) => response.text())
+              .then((result) => console.log(result))
+              .catch((error) => console.log(error));
+
+      window.location.reload();
+    }
+  </script>
+</div>
+</body>
+</html>
