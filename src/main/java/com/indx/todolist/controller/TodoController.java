@@ -13,8 +13,6 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class TodoController {
-    @Value("${aaa}")
-    String aaa;
     @NonNull
     TodoRepository repository;
 
@@ -36,9 +34,5 @@ public class TodoController {
     @DeleteMapping("/deleteItem/{id}")
     void deleteItem(@PathVariable long id) {
         repository.deleteById(id);
-    }
-    @GetMapping("/aaa")
-    String aaa() {
-        return aaa;
     }
 }
